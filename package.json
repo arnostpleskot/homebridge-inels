@@ -1,0 +1,41 @@
+{
+  "name": "homebridge-inels",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for iNELS devices",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type-check": "tsc --skipLibCheck",
+    "lint": "tslint './src/**/*.{ts,tsx}'"
+  },
+  "keywords": [
+    "inels",
+    "homebridge",
+    "homebridge-plugin",
+    "homekit",
+    "ios",
+    "iot"
+  ],
+  "engines": {
+    "node": ">=10.14.1",
+    "homebridge": ">=0.4.45"
+  },
+  "author": "Arnost Pleskot <me@pleskot.net>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/got": "^9.2.1",
+    "@types/sha1": "^1.1.1",
+    "@types/tough-cookie": "^2.3.4",
+    "prettier": "1.15.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.1"
+  },
+  "dependencies": {
+    "got": "^9.3.2",
+    "sha1": "^1.1.1",
+    "tough-cookie": "^2.5.0"
+  }
+}
