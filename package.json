@@ -34,8 +34,10 @@
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "got": "^9.3.2",
+    "fetch-cookie": "^0.7.2",
+    "node-fetch": "^2.3.0",
+    "ramda": "^0.26.1",
     "sha1": "^1.1.1",
-    "tough-cookie": "^2.5.0"
+    "tough-cookie": "^3.0.0"
   }
 }

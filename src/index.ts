@@ -1,3 +1,7 @@
+import API from './api'
+import { getDevices } from './devices'
+import R from 'ramda'
+
 interface IHomebridge {
   hap: {
     Service: IService
@@ -13,7 +17,7 @@ interface IConfig {
   ipAddress: string
 }
 
-type TLogFunction = (message: string) => void
+type TLogFunction = (message: any) => void
 
 interface IService {
   Switch: any
@@ -21,7 +25,8 @@ interface IService {
 
 abstract class HomebridgePlatform {
   log: TLogFunction
-  config: any
+  config: IConfig
+  api: API
 
   protected constructor(log: TLogFunction, config: IConfig) {
     this.log = log
@@ -47,8 +52,18 @@ class Platform extends HomebridgePlatform {
     this.log('iNELS Platform Plugin initialized')
   }
 
-  accessories() {
+  initAPI() {
+    this.api = new API(this.config.ipAddress, this.config.username, this.config.password, this.log)
+  }
+
+  async accessories() {
+    this.initAPI()
+
     this.log('Fetch accessories')
+
+    const devices = await getDevices(this.log, this.api)
+    this.log('Found devices:')
+    this.log(R.map(R.prop('device info'), devices))
   }
 }
 
