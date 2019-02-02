@@ -1,7 +1,9 @@
 import R from 'ramda'
+import { ILog } from '../types'
+import API from '../api'
 
-export const getDevices = async (log, api) => {
-  log('Getting devices')
+export const getDevices = async (log: ILog, api: API) => {
+  log.debug('Getting devices')
 
   try {
     const res = await api.call(`/devices`)
@@ -16,8 +18,8 @@ export const getDevices = async (log, api) => {
   }
 }
 
-const getDeviceDetail = (log, api) => id => {
-  log(`Getting device: ${id}`)
+const getDeviceDetail = (log: ILog, api: API) => id => {
+  log.debug(`Getting device: ${id}`)
 
   try {
     return api.call(`/devices/${id}`)

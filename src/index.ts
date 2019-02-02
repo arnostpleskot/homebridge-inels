@@ -1,46 +1,7 @@
 import API from './api'
 import { getDevices } from './devices'
 import R from 'ramda'
-
-interface IHomebridge {
-  hap: {
-    Service: IService
-    Characteristic: any
-  }
-  registerPlatform: (identifier: string, name: string, platform: typeof HomebridgePlatform, dynamic: boolean) => void
-}
-
-interface IConfig {
-  name: string
-  username: string
-  password: string
-  ipAddress: string
-}
-
-type TLogFunction = (message: any) => void
-
-interface IService {
-  Switch: any
-}
-
-abstract class HomebridgePlatform {
-  log: TLogFunction
-  config: IConfig
-  api: API
-
-  protected constructor(log: TLogFunction, config: IConfig) {
-    this.log = log
-    this.config = config
-  }
-}
-
-abstract class HomebridgeAccessory {
-  log: TLogFunction
-
-  protected constructor(log: TLogFunction, device: any, api: any) {
-    this.log = log
-  }
-}
+import { IService, HomebridgePlatform, IHomebridge } from './types'
 
 let Service: IService
 let Characteristic: any
@@ -59,11 +20,12 @@ class Platform extends HomebridgePlatform {
   async accessories() {
     this.initAPI()
 
-    this.log('Fetch accessories')
+    this.log.debug('Fetch accessories')
 
     const devices = await getDevices(this.log, this.api)
-    this.log('Found devices:')
+    this.log.debug('Fetched accessories:')
     this.log(R.map(R.prop('device info'), devices))
+    this.log.debug(devices)
   }
 }
 
