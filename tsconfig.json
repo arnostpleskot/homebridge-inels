@@ -9,9 +9,8 @@
     "moduleResolution": "node",
     "baseUrl": "src",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "files": [
-    "./src/index.ts"
-  ]
+  "files": ["./src/index.ts"]
 }

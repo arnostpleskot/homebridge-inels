@@ -4,12 +4,12 @@ import sha1 from 'sha1'
 import { URLSearchParams } from 'url'
 import { CookieJar } from 'tough-cookie'
 import R from 'ramda'
-import { ILog } from './types'
+import { ILog } from '../types'
 
 const jar = new CookieJar()
 const fetch = fetchCookie(nodeFetch, jar)
 
-type Methods = 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'UPDATE'
+type Methods = 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'UPDATE' | 'PUT'
 
 class API {
   address: string
@@ -17,7 +17,7 @@ class API {
   password: string
   log: ILog
 
-  constructor(address, username, password, log) {
+  constructor(address: string, username: string, password: string, log: ILog) {
     this.address = address
     this.username = username
     this.password = password
