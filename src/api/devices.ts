@@ -19,7 +19,7 @@ export const getDevices = async (log: ILog, api: API) => {
   }
 }
 
-const getDeviceDetail = (log: ILog, api: API) => (id: string) => {
+export const getDeviceDetail = (log: ILog, api: API) => (id: string) => {
   log.debug(`Getting device: ${id}`)
 
   try {
@@ -29,7 +29,7 @@ const getDeviceDetail = (log: ILog, api: API) => (id: string) => {
   }
 }
 
-const getDeviceState = (log: ILog, api: API) => async (id: string) => {
+export const getDeviceState = (log: ILog, api: API) => async (id: string) => {
   log.debug(`Getting status of device: ${id}`)
 
   try {
@@ -39,14 +39,15 @@ const getDeviceState = (log: ILog, api: API) => async (id: string) => {
   }
 }
 
-const setDeviceState = (log: ILog, api: API, id: string) => {
+export const setDeviceState = (log: ILog, api: API, id: string, body: any) => {
   log.debug(`Putting state into device: ${id}`)
 
   try {
-    const body = new URLSearchParams()
-    body.append('on', 'true')
-
-    return api.call(`/devices/${id}/state`, 'PUT', body)
+    return api.call(`/devices/${id}`, 'PUT', JSON.stringify(body), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+    })
   } catch (e) {
     log.error(e)
   }

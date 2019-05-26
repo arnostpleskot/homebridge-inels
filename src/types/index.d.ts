@@ -12,7 +12,7 @@ interface IHomebridge {
 }
 
 interface IAccessory {
-  on: (event: string, eventHandler: (paired: boolean, callback: () => void) => void) => IAccessory
+  on: (event: string, eventHandler: (paired: boolean, callback: (boolean?) => void) => void) => IAccessory
   getCharacteristic: (characteristic: any) => IAccessory
   addService: (arg0: IService, name: string) => IAccessory
   getService: (arg0: IService) => IAccessory
