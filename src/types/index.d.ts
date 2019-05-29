@@ -12,12 +12,19 @@ interface IHomebridge {
 }
 
 interface IAccessory {
-  on: (event: string, eventHandler: (paired: boolean, callback: (boolean?) => void) => void) => IAccessory
+  on: (event: string, eventHandler: any) => IAccessory
   getCharacteristic: (characteristic: any) => IAccessory
+  setCharacteristic: (characteristic: any, value: any) => IAccessory
+  updateCharacteristic: (characteristic: any, value: any) => IAccessory
+  setValue: (value: any) => IAccessory
   addService: (arg0: IService, name: string) => IAccessory
   getService: (arg0: IService) => IAccessory
+  setPower: (arg0: boolean) => IAccessory
   reachable: boolean
   displayName: string
+  context: {
+    id: string
+  }
 }
 
 interface IConfigPlatform {

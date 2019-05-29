@@ -1,6 +1,7 @@
 import inels from './api/'
-import { getDevices, setDeviceState } from './api/devices'
+import { getDevices, setDeviceState, getDeviceState } from './api/devices'
 import R from 'ramda'
+import { findInRegisteredAccessories } from './utils/index'
 import {
   IService,
   HomebridgePlatform,
@@ -42,7 +43,7 @@ class Platform extends HomebridgePlatform {
     accessory.reachable = true
 
     accessory.on('identify', (paired, callback) => {
-      this.log(accessory.displayName, 'Identify!!!')
+      this.log.debug(accessory.displayName, 'Identify!!!')
       callback()
     })
 
@@ -50,8 +51,14 @@ class Platform extends HomebridgePlatform {
       accessory
         .getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.On)
+        .on('get', async callback => {
+          const getState = getDeviceState(this.log, this.inels)
+          const state = await getState(accessory.context.id)
+          callback(null, state.on)
+        })
         .on('set', (value, callback) => {
-          this.log(accessory.displayName, 'Light -> ' + value)
+          this.log.debug(accessory.displayName, 'Light -> ' + value)
+          setDeviceState(this.log, this.inels, accessory.context.id, { on: value })
           callback()
         })
     }
@@ -60,35 +67,37 @@ class Platform extends HomebridgePlatform {
   }
 
   public addAccessory = (accessory: INelsAccessory) => {
-    this.log('Add Accessory', accessory['device info'].label)
+    this.log.debug('Add Accessory', accessory['device info'].label)
+
+    const registeredAccessory = findInRegisteredAccessories(this.accessories, accessory.id)
+    if (registeredAccessory) {
+      this.log.debug('Accessory is already registered')
+      return this.configureAccessory(registeredAccessory)
+    }
 
     const uuid = UUIDGen.generate(accessory.id)
 
-    try {
-      const newAccessory: IAccessory = new Accessory(accessory['device info'].label, uuid)
-      newAccessory.on('identify', (paired, callback) => {
-        this.log(newAccessory.displayName, 'Identify!!!')
-        callback()
-      })
-
-      newAccessory
-        .addService(Service.Lightbulb, accessory['device info'].label)
-        .getCharacteristic(Characteristic.On)
-        .on('set', (value, callback) => {
-          this.log(newAccessory.displayName, 'Light -> ' + value)
-          setDeviceState(this.log, this.inels, accessory.id, { on: value })
-          callback(false)
-        })
-
-      this.accessories.push(newAccessory)
-      this.api.registerPlatformAccessories('homebridge-inels', 'iNELS', [newAccessory])
-    } catch (error) {
-      this.log(error)
+    const newAccessory: IAccessory = new Accessory(accessory['device info'].label, uuid)
+    newAccessory.context = {
+      id: accessory.id,
     }
+
+    newAccessory.addService(Service.Lightbulb, accessory['device info'].label)
+
+    this.api.registerPlatformAccessories('homebridge-inels', 'iNELS', [newAccessory])
+    this.configureAccessory(newAccessory)
+  }
+
+  public updateCharacteristic = async (accessory: IAccessory) => {
+    const getState = getDeviceState(this.log, this.inels)
+    const state = await getState(accessory.context.id)
+
+    accessory.getService(Service.Lightbulb).updateCharacteristic(Characteristic.On, state.on)
+    this.log(state)
   }
 
   public removeAccessory = () => {
-    this.log('Remove Accessory')
+    this.log.debug('Remove Accessory')
     this.api.unregisterPlatformAccessories('homebridge-inels', 'iNELS', this.accessories)
 
     this.accessories = []
