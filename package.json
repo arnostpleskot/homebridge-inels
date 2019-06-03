@@ -1,6 +1,6 @@
 {
   "name": "homebridge-inels",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Homebridge plugin for iNELS devices",
   "main": "dist/index.js",
   "scripts": {
