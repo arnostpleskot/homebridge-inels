@@ -2,9 +2,10 @@
 
 [Homebridge](https://homebridge.io) plugin for [iNels](https://www.inels.com) devices.
 
-> **⚠️ Warning ⚠️**
+**⚠️ Warning ⚠️**
 > This is in the really early stage of development.
-> **Use with caution**
+
+**Use with caution**
 
 ## TODO:
 
@@ -41,6 +42,8 @@ Where:
 - `username` and `password`: Credentials for login to your smart box - you should create new user without admin privileges for this plugin.
 
 > **Disclaimer**
-> This plugin is not substitution for [iNels official app](https://itunes.apple.com/cz/app/inels-home-control-rf/id1189384684), there is functionality that this plaugin can never have
+> This plugin is not substitution for [iNels official app](https://itunes.apple.com/cz/app/inels-home-control-rf/id1189384684), there is functionality that this plugin can never have.
+
 > I'm not employee or in any other relation with iNELS Group or ELKO EP, s.r.o.
+
 > I'm just user of their devices who wants to have smooth UX on Apple devices.
