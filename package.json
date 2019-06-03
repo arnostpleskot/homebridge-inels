@@ -1,6 +1,6 @@
 {
   "name": "homebridge-inels",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Homebridge plugin for iNELS devices",
   "main": "dist/index.js",
   "scripts": {
@@ -25,9 +25,7 @@
   "author": "Arnost Pleskot <me@pleskot.net>",
   "license": "MIT",
   "devDependencies": {
-    "@types/got": "^9.2.1",
     "@types/sha1": "^1.1.1",
-    "@types/tough-cookie": "^2.3.4",
     "prettier": "1.15.3",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
