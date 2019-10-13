@@ -32,7 +32,10 @@ class Platform extends HomebridgePlatform {
         this.log.debug('Fetching accessories')
         const devices = await getDevices(this.log, this.inels)
         this.log.debug('Fetched accessories:')
-        R.map(this.addAccessory, devices)
+        if (devices) {
+          R.map(this.addAccessory, devices)
+        }
+        this.updateStateOfAllDevices(this.accessories)
       })
     }
   }
@@ -51,15 +54,10 @@ class Platform extends HomebridgePlatform {
       accessory
         .getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.On)
-        .on('get', async callback => {
-          const getState = getDeviceState(this.log, this.inels)
-          const state = await getState(accessory.context.id)
-          callback(null, state.on)
-        })
-        .on('set', (value, callback) => {
+        .on('set', (value: boolean, callback: any, context: any) => {
+          this.log(context)
           this.log.debug(accessory.displayName, 'Light -> ' + value)
           setDeviceState(this.log, this.inels, accessory.context.id, { on: value })
-          callback()
         })
     }
 
@@ -88,12 +86,20 @@ class Platform extends HomebridgePlatform {
     this.configureAccessory(newAccessory)
   }
 
-  public updateCharacteristic = async (accessory: IAccessory) => {
+  public updateStateOfAllDevices = async (devices: IAccessory[]) => {
+    this.log.debug('Getting state of all devices')
     const getState = getDeviceState(this.log, this.inels)
-    const state = await getState(accessory.context.id)
 
-    accessory.getService(Service.Lightbulb).updateCharacteristic(Characteristic.On, state.on)
-    this.log(state)
+    const updateState = async (accessory: IAccessory) => {
+      const state = await getState(accessory.context.id)
+      this.log.debug(accessory.displayName, 'state: ' + state.on)
+      accessory
+        .getService(Service.Lightbulb)
+        .getCharacteristic(Characteristic.On)
+        .updateValue(state.on)
+    }
+
+    R.map(updateState, devices)
   }
 
   public removeAccessory = () => {

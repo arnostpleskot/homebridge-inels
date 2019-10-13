@@ -25,6 +25,7 @@ interface IAccessory {
   context: {
     id: string
   }
+  updateValue: (value: any) => void
 }
 
 interface IConfigPlatform {

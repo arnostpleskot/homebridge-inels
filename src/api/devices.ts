@@ -43,11 +43,7 @@ export const setDeviceState = (log: ILog, api: API, id: string, body: any) => {
   log.debug(`Putting state into device: ${id}`)
 
   try {
-    return api.call(`/devices/${id}`, 'PUT', JSON.stringify(body), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-    })
+    return api.call(`/devices/${id}`, 'PUT', JSON.stringify(body))
   } catch (e) {
     log.error(e)
   }
