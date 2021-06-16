@@ -1,8 +1,15 @@
+-----
+### ⚠️ This project is unmaintained
+
+You can use [elan2mqtt](https://github.com/zdar/elan2mqtt) with [Home Assistant](https://www.home-assistant.io/) to get [HomeKit](https://www.home-assistant.io/integrations/homekit/) support
+
+------
+
 # homebridge-inels
 
 [Homebridge](https://homebridge.io) plugin for [iNels](https://www.inels.com) devices.
 
-**⚠️ Warning ⚠️**
+**Warning**
 > This is in the really early stage of development.
 
 **Use with caution**
